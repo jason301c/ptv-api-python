@@ -12,6 +12,7 @@ def get_url(request: str, api_key: str, developer_id: int, base_url: str = 'http
     :param base_url: PTV API Base URL, defaults to 'https://timetableapi.ptv.vic.gov.au'
     :return: Request URL with signature
     """
+
     request = request + ('&' if ('?' in request) else '?')
     raw = bytes(request + f'devid={developer_id}', 'UTF-8')
 

@@ -7,24 +7,25 @@ load_dotenv()
 
 
 class PTVClient:
+    BASE_URL = 'https://timetableapi.ptv.vic.gov.au'
+
     def __init__(self, api_key: str = None, developer_id: int = None):
         """
         Initializes a PTVClient object
         :param api_key: PTV provided API key
         :param developer_id: PTV provided Developer ID
         """
-        self.api_key = api_key or os.getenv('PTV_API_KEY')
-        self.developer_id = developer_id or os.getenv('PTV_DEVELOPER_ID')
-        self.base_url = 'https://timetableapi.ptv.vic.gov.au'
+        self.__api_key = api_key or os.getenv('PTV_API_KEY')
+        self.__developer_id = developer_id or os.getenv('PTV_DEVELOPER_ID')
 
-        if not self.api_key or not self.developer_id:
+        if not self.__api_key or not self.__developer_id:
             raise ValueError("API key / Developer ID not found")
-        elif not validate_key(api_key, developer_id):
+        elif not validate_key(self.__api_key, self.__developer_id):
             raise RuntimeError("API Key / Developer ID authentication fail")
 
     def _make_request(self, endpoint: str, params: dict = None) -> dict or None:
         """Helper method to make API requests."""
-        url = get_url(endpoint, self.api_key, self.developer_id, self.base_url)
+        url = get_url(endpoint, self.__api_key, self.__developer_id, self.BASE_URL)
         response = requests.get(url, params=params)
         if response.status_code != 200:
             return None
@@ -58,7 +59,7 @@ class PTVClient:
         return self._make_request(endpoint, params=params)
 
     def get_departures_by_stop_and_route(self, route_type: int, stop_id: int, route_id: int, max_results: int = 10,
-                                          **kwargs) -> dict or None:
+                                         **kwargs) -> dict or None:
         """
         View departures for a specific route from a stop.
 
@@ -256,7 +257,7 @@ class PTVClient:
         params = {**kwargs}
         return self._make_request(endpoint, params=params)
 
-    def get_routes(self, **kwargs) -> dict or None:
+    def get_route_all(self, **kwargs) -> dict or None:
         """
         View route names and numbers for all routes.
 
