@@ -2,12 +2,10 @@ import os
 import requests
 from dotenv import load_dotenv
 from .src.get_signature import get_url, validate_key
-
 load_dotenv()
 
 
 class PTVClient:
-    BASE_URL = 'https://timetableapi.ptv.vic.gov.au'
 
     def __init__(self, api_key: str = None, developer_id: int = None):
         """
@@ -25,8 +23,9 @@ class PTVClient:
 
     def _make_request(self, endpoint: str, params: dict = None) -> dict or None:
         """Helper method to make API requests."""
-        url = get_url(endpoint, self.__api_key, self.__developer_id, self.BASE_URL)
-        response = requests.get(url, params=params)
+        url = get_url(endpoint, self.__api_key, self.__developer_id, params)
+        response = requests.get(url)
+        print(url)
         if response.status_code != 200:
             return None
         return response.json()

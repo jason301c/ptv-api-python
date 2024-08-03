@@ -1,19 +1,26 @@
 from hashlib import sha1
 import hmac
 import requests
+from urllib.parse import urlencode
 
 
-def get_url(request: str, api_key: str, developer_id: int, base_url: str = 'https://timetableapi.ptv.vic.gov.au') -> str:
+def get_url(request: str, api_key: str, developer_id: int, params: dict = None, base_url: str = 'https://timetableapi.ptv.vic.gov.au') -> str:
     """
     Code taken from Public Transport Victoria's API documentation
     :param request: The original request URL
     :param developer_id: PTV Developer ID
     :param api_key: PTV API Key
+    :param params: Additional query parameters
     :param base_url: PTV API Base URL, defaults to 'https://timetableapi.ptv.vic.gov.au'
     :return: Request URL with signature
     """
+    request = request.replace(" ", "%20")
 
-    request = request + ('&' if ('?' in request) else '?')
+    if not params:
+        params = {}
+
+    query_string = urlencode(params)
+    request = request + ('&' if ('?' in request) else '?') + query_string + "&"
     raw = bytes(request + f'devid={developer_id}', 'UTF-8')
 
     hashed = hmac.new(bytes(api_key, 'UTF-8'), raw, sha1)
