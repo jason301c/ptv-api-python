@@ -1,5 +1,6 @@
 from hashlib import sha1
 import hmac
+import requests
 
 
 def get_url(request: str, developer_id: int, api_key: str,
@@ -20,23 +21,34 @@ def get_url(request: str, developer_id: int, api_key: str,
     return base_url + str(raw, 'UTF-8') + f'&signature={signature}'
 
 
+def validate_key(developer_id: int, api_key: str) -> bool:
+    """
+    Validates the auth details by using /v3/route_types endpoint.
+    :param developer_id: PTV Developer ID
+    :param api_key: PTV API Key
+    :return: True if the API key and Developer ID validates, otherwise False
+    """
+    request = requests.get(get_url('/v3/route_types', developer_id, api_key))
+    if request.status_code == 200:
+        return True
+    else:
+        return False
+
+
 if __name__ == '__main__':
     """
     Signature generation test
     """
     from dotenv import load_dotenv
     import os
-    import requests
-    print("Testing signature generation, ensure you have the API key and Developer ID inside ptv_api/.env\n")
 
+    print("Testing signature generation, ensure you have the API key and Developer ID inside ptv_api/.env\n")
     load_dotenv('../.env')
     ptv_api_key = os.getenv('PTV_API_KEY')
     ptv_developer_id = int(os.getenv('PTV_DEVELOPER_ID'))
     print("PTV API Key:", ptv_api_key)
     print("PTV Developer ID:", ptv_developer_id, "\n")
+
     print("Sending request for route types...")
-
-    req = requests.get(get_url('/v3/route_types', ptv_developer_id, ptv_api_key))
-
-    assert req.status_code == 200, f"Unsuccessful request code {req.status_code}, check your API key and Developer ID"
-    print("Successful request:", req.json(), "\n")
+    assert validate_key(ptv_developer_id, ptv_api_key), f"Unsuccessful request"
+    print("Successful request")

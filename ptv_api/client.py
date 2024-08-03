@@ -1,6 +1,7 @@
 import os
+import requests
 from dotenv import load_dotenv
-from src.get_signature import get_url
+from src.get_signature import get_url, validate_key
 load_dotenv()
 
 
@@ -12,4 +13,14 @@ class PTVClient:
 
         if not self.api_key or not self.developer_id:
             raise ValueError("API key / Developer ID not found")
+        elif not validate_key(developer_id, api_key):
+            raise RuntimeError("API Key / Developer ID authentication fail")
+
+    def _make_request(self, endpoint) -> dict or None:
+        """Helper method to make API requests."""
+        url = get_url(endpoint, self.developer_id, self.api_key, self.base_url)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return None
+        return response.json()
 
