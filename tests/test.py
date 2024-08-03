@@ -1,12 +1,15 @@
 from ptv_api import PTVClient
 
 client = PTVClient()
+
+print(client.search("South Yarra", route_types = 0))
+input()
+
+
+
 # Pakenham route_id 11
 # South Yarra Station stop_id 1180
 # Train route_type 0
-
-print(client.search("South Yarra", route_types=[0]))
-input()
 """
 client.search()
 

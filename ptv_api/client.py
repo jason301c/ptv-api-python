@@ -6,7 +6,6 @@ load_dotenv()
 
 
 class PTVClient:
-
     def __init__(self, api_key: str = None, developer_id: int = None):
         """
         Initializes a PTVClient object
@@ -25,9 +24,6 @@ class PTVClient:
         """Helper method to make API requests."""
         url = get_url(endpoint, self.__api_key, self.__developer_id, params)
         response = requests.get(url)
-        print(url)
-        if response.status_code != 200:
-            return None
         return response.json()
 
     def get_departures_by_stop(self, route_type: int, stop_id: int, max_results: int = 10, **kwargs) -> dict or None:
@@ -397,7 +393,7 @@ class PTVClient:
         params = {**kwargs}
         return self._make_request(endpoint, params=params)
 
-    def get_stops_by_route(self, route_id: str, route_type: int, **kwargs) -> dict or None:
+    def get_stops_by_route(self, route_id: int, route_type: int, **kwargs) -> dict or None:
         """
         View all stops on a specific route.
 

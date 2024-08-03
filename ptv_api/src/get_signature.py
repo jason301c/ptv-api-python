@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 
 def get_url(request: str, api_key: str, developer_id: int, params: dict = None, base_url: str = 'https://timetableapi.ptv.vic.gov.au') -> str:
     """
-    Code taken from Public Transport Victoria's API documentation
+    Code partially taken from Public Transport Victoria's API documentation
     :param request: The original request URL
     :param developer_id: PTV Developer ID
     :param api_key: PTV API Key
@@ -14,15 +14,17 @@ def get_url(request: str, api_key: str, developer_id: int, params: dict = None, 
     :param base_url: PTV API Base URL, defaults to 'https://timetableapi.ptv.vic.gov.au'
     :return: Request URL with signature
     """
+    # Replacing all spaces in request
     request = request.replace(" ", "%20")
-
     if not params:
         params = {}
 
+    # Forming request URL
     query_string = urlencode(params)
     request = request + ('&' if ('?' in request) else '?') + query_string + "&"
-    raw = bytes(request + f'devid={developer_id}', 'UTF-8')
 
+    # Calculating signature
+    raw = bytes(request + f'devid={developer_id}', 'UTF-8')
     hashed = hmac.new(bytes(api_key, 'UTF-8'), raw, sha1)
     signature = hashed.hexdigest()
     return base_url + str(raw, 'UTF-8') + f'&signature={signature}'
@@ -33,7 +35,7 @@ def validate_key(api_key: str, developer_id: int) -> bool:
     Validates the auth details by using /v3/route_types endpoint.
     :param developer_id: PTV Developer ID
     :param api_key: PTV API Key
-    :return: True if the API key and Developer ID validates, otherwise False
+    :return: True if the API key and Developer ID authenticates successfully, otherwise False
     """
     request = requests.get(get_url('/v3/route_types', api_key, developer_id))
     if request.status_code == 200:
