@@ -33,13 +33,13 @@ Firstly, you are going to need a pair of Developer ID and API key from Public Tr
 - When creating an instance of PTVClient, pass the Developer ID and API key
 
 ## Usage
-Import PTVclient:
-'from ptv_api import PTVClient'/
-Instantiate a client object:
-client = PTVClient() # If you have .env file set up
-client = PTVClient("API_KEY", DEV_ID)/
-Now you can access the endpoints through PTVClient's methods:
-client.search("South Yarra")
+Import PTVclient:\
+from ptv_api import PTVClient'\
+Instantiate a client object:\
+client = PTVClient() # If you have .env file set up\
+client = PTVClient("API_KEY", DEV_ID)\
+Now you can access the endpoints through PTVClient's methods:\
+client.search("South Yarra")\
 
 ## Examples
 ## Contact
