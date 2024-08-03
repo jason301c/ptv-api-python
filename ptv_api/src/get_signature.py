@@ -3,8 +3,7 @@ import hmac
 import requests
 
 
-def get_url(request: str, developer_id: int, api_key: str,
-            base_url: str = 'https://timetableapi.ptv.vic.gov.au') -> str:
+def get_url(request: str, api_key: str, developer_id: int, base_url: str = 'https://timetableapi.ptv.vic.gov.au') -> str:
     """
     Code taken from Public Transport Victoria's API documentation
     :param request: The original request URL
@@ -21,14 +20,14 @@ def get_url(request: str, developer_id: int, api_key: str,
     return base_url + str(raw, 'UTF-8') + f'&signature={signature}'
 
 
-def validate_key(developer_id: int, api_key: str) -> bool:
+def validate_key(api_key: str, developer_id: int) -> bool:
     """
     Validates the auth details by using /v3/route_types endpoint.
     :param developer_id: PTV Developer ID
     :param api_key: PTV API Key
     :return: True if the API key and Developer ID validates, otherwise False
     """
-    request = requests.get(get_url('/v3/route_types', developer_id, api_key))
+    request = requests.get(get_url('/v3/route_types', api_key, developer_id))
     if request.status_code == 200:
         return True
     else:
@@ -50,5 +49,5 @@ if __name__ == '__main__':
     print("PTV Developer ID:", ptv_developer_id, "\n")
 
     print("Sending request for route types...")
-    assert validate_key(ptv_developer_id, ptv_api_key), f"Unsuccessful request"
+    assert validate_key(ptv_api_key, ptv_developer_id), f"Unsuccessful request"
     print("Successful request")
