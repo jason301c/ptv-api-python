@@ -1,10 +1,11 @@
 from ptv_api import PTVClient
-
+import json
 client = PTVClient()
 
-print(client.search("South Yarra", route_types = 0))
-input()
-
+out = client.get_stops_by_route(11, 0,include_advertised_interchange = True)
+print(out)
+with open('output.json', 'w') as file:
+    json.dump(out, file)
 
 
 # Pakenham route_id 11
