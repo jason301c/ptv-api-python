@@ -1,22 +1,30 @@
 from ptv_api import PTVClient
-import json
+
 client = PTVClient()
 
-out = client.get_stops_by_route(11, 0,include_advertised_interchange = True)
-print(out)
-with open('output.json', 'w') as file:
-    json.dump(out, file)
+print("(0/) Testing .search()")
+# Searching by term South Yarra, only including train routes
+print(client.search("South Yarra", route_types=[0]))
+input("Press enter..")
 
+print("(1/) Testing .get_stops_by_route()")
+# Getting stops of the Pakenham train route
+print(client.get_stops_by_route(11, 0, include_advertised_interchange=True))
+input("Press enter..")
 
-# Pakenham route_id 11
-# South Yarra Station stop_id 1180
-# Train route_type 0
+print("(1/) Testing .get_stops_by_geolocation()")
+# Latitude and longitude of Southern Cross station
+print(client.get_stops_by_geolocation(-37.818, 144.952, max_results=1))
+input("Press enter..")
+
+# TODO: Filter by route
+
+print("(1/) Testing .get_stop_details()")
+# ID of Southern Cross station
+print(client.get_stop_details(1181, 1))
+input("Press enter..")
 """
-client.search()
 
-client.get_stops_by_route()
-client.get_stops_by_geolocation()
-client.get_stop_details()
 
 client.get_outlets_all()
 client.get_outlets_by_geolocation()
