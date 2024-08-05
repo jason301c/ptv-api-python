@@ -31,17 +31,19 @@ def get_url(request: str, api_key: str, developer_id: int, params: dict = None, 
     """
     # Replacing all spaces in request
     request = request.replace(" ", "%20")
+
     if not params:
         params = {}
 
     # Forming request URL
     query_string = url_encode_params(params)
-    request = request + ('&' if ('?' in request) else '?') + query_string + "&"
+    request = request + ('&' if ('?' in request) else '?') + (f"{query_string}&" if len(query_string) > 0 else query_string )
 
     # Calculating signature
     raw = bytes(request + f'devid={developer_id}', 'UTF-8')
     hashed = hmac.new(bytes(api_key, 'UTF-8'), raw, sha1)
     signature = hashed.hexdigest()
+
     return base_url + str(raw, 'UTF-8') + f'&signature={signature}'
 
 
