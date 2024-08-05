@@ -25,6 +25,7 @@ class PTVClient:
         """Helper method to make API requests."""
         url = get_url(endpoint, self.__api_key, self.__developer_id, params)
         response = requests.get(url)
+        print("REQUEST URL: ", url)
         return json.dumps(response.json(), indent=2)
 
     def get_departures_by_stop(self, route_type: int, stop_id: int, max_results: int = 10, **kwargs) -> dict or None:

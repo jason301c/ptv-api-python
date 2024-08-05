@@ -3,6 +3,21 @@ import hmac
 import requests
 from urllib.parse import urlencode
 
+def url_encode_params(params):
+    """
+    Converting the parameter dictionary onto a list of tuples
+    :param params:
+    :return:
+    """
+    if not isinstance(params, dict):
+        raise Exception("You must pass in a dictionary!")
+    params_list = []
+    for k, v in params.items():
+        if isinstance(v, list):
+            params_list.extend([(k, x) for x in v])
+        else:
+            params_list.append((k, v))
+    return urlencode(params_list)
 
 def get_url(request: str, api_key: str, developer_id: int, params: dict = None, base_url: str = 'https://timetableapi.ptv.vic.gov.au') -> str:
     """
@@ -20,7 +35,7 @@ def get_url(request: str, api_key: str, developer_id: int, params: dict = None, 
         params = {}
 
     # Forming request URL
-    query_string = urlencode(params)
+    query_string = url_encode_params(params)
     request = request + ('&' if ('?' in request) else '?') + query_string + "&"
 
     # Calculating signature
@@ -42,6 +57,7 @@ def validate_key(api_key: str, developer_id: int) -> bool:
         return True
     else:
         return False
+
 
 
 if __name__ == '__main__':

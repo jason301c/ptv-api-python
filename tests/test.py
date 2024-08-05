@@ -14,10 +14,8 @@ input("Press enter..")
 
 print("(1/) Testing .get_stops_by_geolocation()")
 # Latitude and longitude of Southern Cross station
-print(client.get_stops_by_geolocation(-37.818, 144.952, max_results=1))
+print(client.get_stops_by_geolocation(-37.818, 144.952, max_results=1, route_types=[0]))
 input("Press enter..")
-
-# TODO: Filter by route
 
 print("(1/) Testing .get_stop_details()")
 # ID of Southern Cross station
