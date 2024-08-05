@@ -13,15 +13,14 @@ This Python module is a wrapper for Public Transport Victoria (PTV) data API. It
 7. [To-do](#to-do)
 
 ## Features
-This module is meant to ease the access of PTV Data API v3 through Python. Here, the endpoints are presented as methods of PTVClient.
-- API key detection from .env files
+The purpose of this module is to ease the access of PTV Data API v3 through Python. The endpoints of PTV Data API are presented as methods of PTVClient.
 - PTV signature calculation
 - API key authentication on initialization
 - Supports all PTV API endpoints
-- Well documented (supports Python typehints)
   
 ## Installation
-- Download the folder 'ptv_api'
+### Manually
+- Clone the repository
 - Install requirements.txt
 
 ## Setup
