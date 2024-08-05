@@ -9,12 +9,12 @@ This Python module is a wrapper for Public Transport Victoria (PTV) data API. It
 3. [Setup](#setup)
 4. [Usage](#usage)
 5. [Examples](#examples)
-6. [Endpoints](#Methods-and-Endpoints)
+6. [Endpoints](#methods-and-endpoints)
 6. [Contact](#contact)
 7. [To-do](#to-do)
 
 ## Features
-The purpose of this module is to ease the access of (PTV Data API)[https://www.ptv.vic.gov.au/footer/data-and-reporting/datasets/ptv-timetable-api/] v3 through Python. The endpoints of PTV Data API are presented as methods of PTVClient.
+The purpose of this module is to ease the access of [PTV Data API](https://www.ptv.vic.gov.au/footer/data-and-reporting/datasets/ptv-timetable-api/) v3 through Python. The endpoints of PTV Data API are presented as methods of PTVClient.
 - PTV signature calculation
 - API key authentication on initialization
 - Supports all PTV API endpoints
@@ -23,12 +23,13 @@ The purpose of this module is to ease the access of (PTV Data API)[https://www.p
 ### Manually
 1. Download the folder `ptv_api`.
 2. Install the required packages using `requirements.txt`.
+
    ```bash
    pip install -r requirements.txt
    ```
 
 ## Setup
-Firstly, you are going to need a pair of Developer ID and API key from [Public Transport Victoria](https://www.ptv.vic.gov.au/footer/data-and-reporting/datasets/ptv-timetable-api/)
+You are going to need a pair of Developer ID and API key from [Public Transport Victoria](https://www.ptv.vic.gov.au/footer/data-and-reporting/datasets/ptv-timetable-api/)
 ### Option 1: .env file
 - Create a file named __'.env'__ in the same directory where you import __'ptv_api'__.
 - The contents should follow the format of __'.env_sample'__.
@@ -48,7 +49,7 @@ Instantiate a client object:
    ```
 Access the endpoints through __'PTVClient'__'s methods:
    ```
-   client.search("South Yarra")\
+   client.search("South Yarra")
    ```
 
 ## Examples
@@ -65,7 +66,7 @@ To estimate a fare by zone:
 And so many more...
 
 ## Methods and Endpoints
-You can access the list of PTV Endpoints (here)[https://timetableapi.ptv.vic.gov.au/swagger/ui/index].
+You can access the list of PTV Endpoints [here](https://timetableapi.ptv.vic.gov.au/swagger/ui/index).
 <details>
 <summary>All endpoints have a corresponding method. (Click to expand)</summary>
 
