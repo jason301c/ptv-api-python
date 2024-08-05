@@ -22,11 +22,14 @@ class PTVClient:
             raise RuntimeError("API Key / Developer ID authentication fail")
 
     def _make_request(self, endpoint: str, params: dict = None) -> dict or None:
-        """Helper method to make API requests."""
+        """
+        Helper method to make API requests.
+        :param endpoint: API endpoint
+        :param params: Query parameters to be sent in the request
+        :return: API response
+        """
         url = get_url(endpoint, self.__api_key, self.__developer_id, params)
-        response = requests.get(url)
-        print("REQUEST URL: ",url)
-        return json.dumps(response.json(), indent=2)
+        return json.dumps(requests.get(url).json(), indent=2)
 
     def get_departures_by_stop(self, route_type: int, stop_id: int, max_results: int = 10, **kwargs) -> dict or None:
         """

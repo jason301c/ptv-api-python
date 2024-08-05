@@ -3,15 +3,14 @@ import hmac
 import requests
 from urllib.parse import urlencode
 
-def url_encode_params(params):
+def url_encode_params(params: dict) -> str:
     """
-    Converting the parameter dictionary onto a list of tuples
-    :param params:
-    :return:
+    Encoding the parameters into URL by using urllib.
+    :param params: Parameters stored in a key value pair
+    :return: Encoded string containing those parameters
     """
-    if not isinstance(params, dict):
-        raise Exception("You must pass in a dictionary!")
     params_list = []
+    # Converts dict into list of tuples
     for k, v in params.items():
         if isinstance(v, list):
             params_list.extend([(k, x) for x in v])
@@ -32,12 +31,13 @@ def get_url(request: str, api_key: str, developer_id: int, params: dict = None, 
     # Replacing all spaces in request
     request = request.replace(" ", "%20")
 
+    # Set default params argument to an empty dict
     if not params:
         params = {}
 
     # Forming request URL
     query_string = url_encode_params(params)
-    request = request + ('&' if ('?' in request) else '?') + (f"{query_string}&" if len(query_string) > 0 else query_string )
+    request = request + ('&' if ('?' in request) else '?') + (f"{query_string}&" if len(query_string) > 0 else query_string)
 
     # Calculating signature
     raw = bytes(request + f'devid={developer_id}', 'UTF-8')
@@ -72,10 +72,14 @@ if __name__ == '__main__':
     print("Testing signature generation, ensure you have the API key and Developer ID inside ptv_api/.env\n")
     load_dotenv('../.env')
     ptv_api_key = os.getenv('PTV_API_KEY')
-    ptv_developer_id = int(os.getenv('PTV_DEVELOPER_ID'))
+    ptv_developer_id = os.getenv('PTV_DEVELOPER_ID')
+
+    if not (ptv_api_key or ptv_developer_id):
+        raise ValueError("API Key / Developer ID not found! Provide .env file inside ptv_api/.env.")
+
     print("PTV API Key:", ptv_api_key)
     print("PTV Developer ID:", ptv_developer_id, "\n")
 
     print("Sending request for route types...")
-    assert validate_key(ptv_api_key, ptv_developer_id), f"Unsuccessful request"
+    assert validate_key(ptv_api_key, int(ptv_developer_id)), f"Unsuccessful request"
     print("Successful request")
